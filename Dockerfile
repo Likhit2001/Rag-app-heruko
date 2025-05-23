@@ -27,4 +27,4 @@ RUN pip install --no-cache-dir -r frontend/requirements.txt
 EXPOSE 8501
 
 # Run Streamlit only, binding to Heroku's dynamic $PORT
-CMD ["streamlit", "run", "frontend/app.py", "--server.port=$PORT", "--server.address=0.0.0.0"]
+CMD ["sh", "-c", "streamlit run frontend/app.py --server.port=$PORT --server.address=0.0.0.0"]
