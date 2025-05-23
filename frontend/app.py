@@ -1,5 +1,6 @@
 import streamlit as st
 import requests
+from backend.rag_logic import retrieve_top_k_contexts, build_prompt, generate_answer
 
 st.title("Ask Questions Based on Your Paragraph")
 
@@ -7,22 +8,18 @@ context = st.text_area("Enter your paragraph:",height=250)
 question = st.text_input("Ask a question based on the paragraph:")
 
 
-
 if st.button("Submit"):
     with st.spinner("Thinking..."):
+        if context and question:
+            contexts = retrieve_top_k_contexts(question)
+            prompt = build_prompt(question, contexts)
+            answer = generate_answer(prompt)
 
-        response = requests.post(
-            "http://localhost:8000/ask",
-            json={"context": context , "question": question}
-        )
-
-        if response.status_code == 200:
             st.success("Answer:")
-            st.write("Context Used to answer your question")
-            st.write(response.json()["context"][0])
-            st.write(response.json()["answer"])
+            st.write("Context Used to answer your question:")
+            st.write(contexts[0])  # first chunk used
+            st.write(answer)
         else:
-            st.error("Something went wrong.")
-
+            st.error("Please provide both context and a question.")
 
 # streamlit run frontend/app.py
