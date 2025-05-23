@@ -92,7 +92,7 @@ def generate_answer(prompt):
     outputs = model_generation.generate(**inputs, max_length=512)
     return tokenizer.decode(outputs[0], skip_special_tokens=True)
 
-# uvicorn backend.main:app --reload
+# uvicorn backend.main:app --reload  
 
 
 
