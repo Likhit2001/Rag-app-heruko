@@ -1,5 +1,10 @@
 import streamlit as st
 import requests
+
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 from backend.rag_logic import retrieve_top_k_contexts, build_prompt, generate_answer
 
 st.title("Ask Questions Based on Your Paragraph")
