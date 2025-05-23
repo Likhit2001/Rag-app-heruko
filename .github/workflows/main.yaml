@@ -59,6 +59,30 @@
 ### ⬆ IMPORTANT PART ⬆ ###
 
 
+# name: Deploy to Heroku
+
+# on:
+#   push:
+#     branches: [main]
+
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v3
+
+#       - name: Build, Push and Release a Docker container to Heroku
+#         uses: gonuit/heroku-docker-deploy@v1.3.3
+#         with:
+#           email: ${{ secrets.HEROKU_EMAIL }}
+#           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+#           heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
+#           dockerfile_directory: ./
+#           dockerfile_name: Dockerfile
+#           docker_options: "--no-cache"
+#           process_type: web
+
 name: Deploy to Heroku
 
 on:
@@ -66,19 +90,26 @@ on:
     branches: [main]
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Build, Push and Release a Docker container to Heroku
-        uses: gonuit/heroku-docker-deploy@v1.3.3
-        with:
-          email: ${{ secrets.HEROKU_EMAIL }}
-          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-          heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
-          dockerfile_directory: ./
-          dockerfile_name: Dockerfile
-          docker_options: "--no-cache"
-          process_type: web
+      - name: Log in to Heroku Container Registry
+        run: |
+          echo "${{ secrets.HEROKU_API_KEY }}" | docker login --username=_ --password-stdin registry.heroku.com
+
+      - name: Build Docker image
+        run: docker build -t registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web .
+
+      - name: Push Docker image to Heroku
+        run: docker push registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web
+
+      - name: Release Docker image on Heroku
+        run: |
+          curl https://cli-assets.heroku.com/install.sh | sh
+          heroku container:release web -a ${{ secrets.HEROKU_APP_NAME }}
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
