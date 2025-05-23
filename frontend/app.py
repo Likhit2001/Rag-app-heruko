@@ -16,7 +16,7 @@ question = st.text_input("Ask a question based on the paragraph:")
 if st.button("Submit"):
     with st.spinner("Thinking..."):
         if context and question:
-            contexts = retrieve_top_k_contexts(question)
+            contexts = retrieve_top_k_contexts(question, context) 
             prompt = build_prompt(question, contexts)
             answer = generate_answer(prompt)
 
