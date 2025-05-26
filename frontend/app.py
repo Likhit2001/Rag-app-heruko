@@ -38,27 +38,27 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from backend.rag_logic import retrieve_top_k_contexts, build_prompt, generate_answer
 
 # --- Navbar ---
-st.markdown(
-    """
-    <style>
-    .navbar {
-        background-color: #1f77b4;
-        padding: 1rem 2rem;
-        border-radius: 0.5rem;
-        margin-bottom: 2rem;
-    }
-    .navbar h1 {
-        color: white;
-        font-size: 2rem;
-        margin: 0;
-    }
-    </style>
-    <div class="navbar">
-        <h1>QueryBuddy: Ask Your Paragraph</h1>
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+# st.markdown(
+#     """
+#     <style>
+#     .navbar {
+#         background-color: #1f77b4;
+#         padding: 1rem 2rem;
+#         border-radius: 0.5rem;
+#         margin-bottom: 2rem;
+#     }
+#     .navbar h1 {
+#         color: white;
+#         font-size: 2rem;
+#         margin: 0;
+#     }
+#     </style>
+#     <div class="navbar">
+#         <h1>QueryBuddy: Ask Your Paragraph</h1>
+#     </div>
+#     """,
+#     unsafe_allow_html=True
+# )
 
 # --- Input Mode Selection ---
 input_mode = st.radio("Choose input type:", ["Type or Paste Text", "Upload PDF"])
