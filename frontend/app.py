@@ -28,7 +28,6 @@
 #             st.error("Please provide both context and a question.")
 
 import streamlit as st
-import requests
 import pdfplumber
 import sys
 import os
@@ -37,32 +36,8 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from backend.rag_logic import retrieve_top_k_contexts, build_prompt, generate_answer
 
-# --- Navbar ---
-# st.markdown(
-#     """
-#     <style>
-#     .navbar {
-#         background-color: #1f77b4;
-#         padding: 1rem 2rem;
-#         border-radius: 0.5rem;
-#         margin-bottom: 2rem;
-#     }
-#     .navbar h1 {
-#         color: white;
-#         font-size: 2rem;
-#         margin: 0;
-#     }
-#     </style>
-#     <div class="navbar">
-#         <h1>QueryBuddy: Ask Your Paragraph</h1>
-#     </div>
-#     """,
-#     unsafe_allow_html=True
-# )
-
 # --- Input Mode Selection ---
 input_mode = st.radio("Choose input type:", ["Type or Paste Text", "Upload PDF"])
-
 context = ""
 
 if input_mode == "Type or Paste Text":
@@ -89,7 +64,7 @@ question = st.text_input("Ask a question based on the context:")
 # --- Submit Button ---
 if st.button("Submit"):
     with st.spinner("Thinking..."):
-        if context and question:
+        if context.strip() and question.strip():
             try:
                 contexts = retrieve_top_k_contexts(question, context)
                 prompt = build_prompt(question, contexts)
@@ -97,7 +72,10 @@ if st.button("Submit"):
 
                 st.success("Answer:")
                 st.write("Context Used to answer your question:")
-                st.write(contexts[0])  # first relevant chunk
+                if contexts:
+                    st.write(contexts[0])  # first relevant chunk
+                else:
+                    st.warning("No relevant context was found.")
                 st.write(answer)
             except Exception as e:
                 st.error(f"Error during processing: {e}")
