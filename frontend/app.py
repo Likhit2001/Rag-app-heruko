@@ -12,7 +12,23 @@ st.set_page_config(
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from backend.rag_logic import retrieve_top_k_contexts, build_prompt, generate_answer
 
-st.title("Askify – “Ask from any paragraph or PDF.")
+st.title("Askify – Ask from any paragraph or PDF.")
+st.markdown(
+    """
+    💬 **Askify** lets you upload a PDF or paste any paragraph and ask questions about it.  
+    Powered by retrieval and generative AI, it gives context-aware answers in seconds.
+
+    🔍 [Click here to view the system architecture](https://drive.google.com/file/d/1K1R3iNRlxGrG0Krg2ELud9ZiJeZoqkWx/view?usp=sharing)
+
+    <a href="https://drive.google.com/file/d/1K1R3iNRlxGrG0Krg2ELud9ZiJeZoqkWx/view?usp=sharing" target="_blank">
+        <img src="https://drive.google.com/file/d/1K1R3iNRlxGrG0Krg2ELud9ZiJeZoqkWx/view?usp=sharing" width="700"/>
+    </a>
+    """,
+    unsafe_allow_html=True
+)
+
+
+
 input_mode = st.radio("Choose input type:", ["Type or Paste Text", "Upload PDF"])
 
 context = ""
@@ -48,9 +64,9 @@ if st.button("Submit"):
                 answer = generate_answer(prompt)
 
                 st.success("Answer:")
+                st.write(answer)
                 st.write("Context Used to answer your question:")
                 st.write(contexts[0])  # first relevant chunk
-                st.write(answer)
             except Exception as e:
                 st.error(f"Error during processing: {e}")
         else:
