@@ -19,10 +19,6 @@ st.markdown(
     Powered by retrieval and generative AI, it gives context-aware answers in seconds.
 
     🔍 [Click here to view the system architecture](https://drive.google.com/file/d/1K1R3iNRlxGrG0Krg2ELud9ZiJeZoqkWx/view?usp=sharing)
-
-    <a href="https://drive.google.com/file/d/1K1R3iNRlxGrG0Krg2ELud9ZiJeZoqkWx/view?usp=sharing" target="_blank">
-        <img src="https://drive.google.com/file/d/1K1R3iNRlxGrG0Krg2ELud9ZiJeZoqkWx/view?usp=sharing" width="700"/>
-    </a>
     """,
     unsafe_allow_html=True
 )
