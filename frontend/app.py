@@ -3,13 +3,16 @@ import pdfplumber
 import sys
 import os
 
-# Add backend logic path
-# os.environ["STREAMLIT_SERVER_PORT"] = os.environ.get("PORT", "8501")
+st.set_page_config(
+    page_title="Askify – Ask from any paragraph or PDF",
+    page_icon="🧠",  # Or use a custom icon file
+    layout="centered"
+)
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from backend.rag_logic import retrieve_top_k_contexts, build_prompt, generate_answer
 
-st.title("Ask Questions Based on Your Paragraph")
+st.title("Askify – “Ask from any paragraph or PDF.")
 input_mode = st.radio("Choose input type:", ["Type or Paste Text", "Upload PDF"])
 
 context = ""
