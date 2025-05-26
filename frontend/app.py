@@ -25,4 +25,4 @@ if st.button("Submit"):
             st.write(contexts[0])  # first chunk used
             st.write(answer)
         else:
-            st.error("Please provide both context and a question.")
+            st.error("Please provide both context and a question. ")
