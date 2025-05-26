@@ -12,11 +12,11 @@ st.set_page_config(
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from backend.rag_logic import retrieve_top_k_contexts, build_prompt, generate_answer
 
-st.title("Askify – Ask from any paragraph or PDF.")
+st.title("Askify – Ask from any paragraph or PDF")
 st.markdown(
     """
     💬 **Askify** lets you upload a PDF or paste any paragraph and ask questions about it.  
-    Powered by retrieval and generative AI, it gives context-aware answers in seconds.
+    Powered by retrieval and generative model, it gives context-aware answers in seconds.
 
     🔍 [Click here to view the system architecture](https://drive.google.com/file/d/1K1R3iNRlxGrG0Krg2ELud9ZiJeZoqkWx/view?usp=sharing)
     """,
