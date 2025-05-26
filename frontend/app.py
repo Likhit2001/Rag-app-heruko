@@ -4,6 +4,8 @@ import sys
 import os
 
 # Add backend logic path
+os.environ["STREAMLIT_SERVER_PORT"] = os.environ.get("PORT", "8501")
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from backend.rag_logic import retrieve_top_k_contexts, build_prompt, generate_answer
 
