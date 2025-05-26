@@ -15,18 +15,16 @@ import textwrap
 from pathlib import Path
 
 
-tokenizer = T5Tokenizer.from_pretrained("google/flan-t5-small")
-model_generation = T5ForConditionalGeneration.from_pretrained("google/flan-t5-small")
+tokenizer = AutoTokenizer.from_pretrained("google/flan-t5-small")
+model_generation = AutoModelForSeq2SeqLM.from_pretrained("google/flan-t5-small")
 
-# Use light embedding model
+# Load embedding model once
 embedding_model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
 
 def chunk_text(context_text: str, chunk_size: int = 300):
-    # Split the input string into smaller chunks
     chunks = textwrap.wrap(context_text, width=chunk_size, break_long_words=False)
     chunk_text_to_original = [context_text] * len(chunks)
 
-    # Encode chunks in batches
     batch_size = 32
     context_embeddings = []
     for i in range(0, len(chunks), batch_size):
@@ -36,7 +34,6 @@ def chunk_text(context_text: str, chunk_size: int = 300):
 
     context_embeddings = np.vstack(context_embeddings)
 
-    # Create FAISS index in memory
     dimension = context_embeddings.shape[1]
     index = faiss.IndexFlatL2(dimension)
     index.add(context_embeddings)
@@ -47,20 +44,14 @@ def chunk_text(context_text: str, chunk_size: int = 300):
     })
 
 def retrieve_top_k_contexts(question, context_paragraph, k=5):
-    from .rag_logic import chunk_text  # if inside same file, skip this line
-
-    # Create FAISS index and chunk DataFrame from context
     index, context_df = chunk_text(context_paragraph)
 
-    # Get project root and custom model path
-    base_dir = Path(__file__).resolve().parent.parent  # /app/backend → /app
+    base_dir = Path(__file__).resolve().parent.parent
     model_path = base_dir / "final_model_partial_frezzing"
 
-    # Load the fine-tuned SentenceTransformer model
     retrieve_model = SentenceTransformer(str(model_path))
     retrieve_model.eval()
 
-    # Encode question and perform similarity search
     query_vec = retrieve_model.encode([question], convert_to_numpy=True)
     query_vec = np.expand_dims(query_vec, axis=0) if query_vec.ndim == 1 else query_vec
 
@@ -79,8 +70,3 @@ def generate_answer(prompt):
     inputs = tokenizer(prompt, return_tensors="pt", max_length=512, truncation=True)
     outputs = model_generation.generate(**inputs, max_length=512)
     return tokenizer.decode(outputs[0], skip_special_tokens=True)
-# uvicorn backend.main:app --reload
-
-
-
-
