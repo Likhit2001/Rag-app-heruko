@@ -19,7 +19,9 @@ tokenizer = AutoTokenizer.from_pretrained("google/flan-t5-small")
 model_generation = AutoModelForSeq2SeqLM.from_pretrained("google/flan-t5-small")
 
 # Load embedding model once
-embedding_model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
+base_dir = Path(__file__).resolve().parent.parent
+model_path = base_dir / "final_model_partial_frezzing"
+embedding_model = SentenceTransformer(str(model_path))
 
 def chunk_text(context_text: str, chunk_size: int = 300):
     chunks = textwrap.wrap(context_text, width=chunk_size, break_long_words=False)
