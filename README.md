@@ -8,11 +8,11 @@ This project implements a **Retrieval-Augmented Generation (RAG)** pipeline that
 
 ## 🚀 Live Demo
 
-🔗 **Heroku App:** (https://rag-appv1-dc595588abd5.herokuapp.com/)
+🔗 **Heroku App:** NOT HOSTED AS OF NOW
 
 ## 🚀  System Architecture
+<img width="793" height="590" alt="Screenshot 2025-11-17 at 10 20 35 PM" src="https://github.com/user-attachments/assets/8505de79-27e4-4dfb-bfdc-7b8b3a99265d" />
 
-![image](https://github.com/user-attachments/assets/a7d2bb85-cb20-4b2e-a2be-54b42f98fe83)
 
 
 
@@ -45,6 +45,7 @@ This project implements a **Retrieval-Augmented Generation (RAG)** pipeline that
 ## 🧠 Core Features
 
 - **Dense Retrieval**: Semantic search via SentenceTransformers + FAISS.
+- **Two-Stage Retrieval**: Topic-based clustering → deep retrieval only on relevant shards
 - **Generative QA**: Uses FLAN-T5 to generate answers based on top-k context.
 - **Modular Pipeline**: Decoupled backend (FastAPI) and frontend (Streamlit).
 - **Containerized**: Fully Dockerized for ease of deployment.
